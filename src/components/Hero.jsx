@@ -1,9 +1,7 @@
-import { Suspense, lazy, useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowDown, Github, Linkedin, Mail, ChevronRight } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
 import { Link } from 'react-scroll'
-
-const Spline = lazy(() => import('@splinetool/react-spline'))
+import { Github, Linkedin, Mail, ArrowRight, Download } from 'lucide-react'
 
 const roles = [
   'Frontend Developer',
@@ -21,7 +19,6 @@ function TypewriterText({ words }) {
   useEffect(() => {
     const word = words[index]
     let timeout
-
     if (!isDeleting && displayed.length < word.length) {
       timeout = setTimeout(() => setDisplayed(word.slice(0, displayed.length + 1)), 80)
     } else if (!isDeleting && displayed.length === word.length) {
@@ -36,136 +33,265 @@ function TypewriterText({ words }) {
   }, [displayed, isDeleting, index, words])
 
   return (
-    <span className="text-cyber-cyan font-mono typing-cursor">{displayed}</span>
+    <span className="font-mono text-brutal-black typing-cursor">{displayed}</span>
   )
 }
 
-function FloatingParticles() {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 3 + 1,
-    x: Math.random() * 100,
-    duration: Math.random() * 15 + 10,
-    delay: Math.random() * 10,
-  }))
+// ── Card Flick Stack ─────────────────────────────────────────────────────────
+const stackCards = [
+  {
+    id: 'frontend',
+    label: '01. FRONTEND',
+    title: 'React\nMagic',
+    icon: '⚡',
+    bg: 'bg-white',
+    textColor: 'text-brutal-black',
+    badgeBg: 'bg-caution-yellow',
+    badgeText: 'text-brutal-black',
+    initialTransform: 'rotate(-2deg)',
+    zIndex: 30,
+  },
+  {
+    id: 'backend',
+    label: '02. BACKEND',
+    title: 'Node.js\nPower',
+    icon: '🔧',
+    bg: 'bg-acid-green',
+    textColor: 'text-brutal-black',
+    badgeBg: 'bg-brutal-black',
+    badgeText: 'text-white',
+    initialTransform: 'rotate(5deg) translate(20px,-10px)',
+    zIndex: 20,
+  },
+  {
+    id: 'design',
+    label: '03. DESIGN',
+    title: 'UI/UX\nChaos',
+    icon: '🎨',
+    bg: 'bg-primary-container',
+    textColor: 'text-white',
+    badgeBg: 'bg-white',
+    badgeText: 'text-brutal-black',
+    initialTransform: 'rotate(-10deg) translate(-20px,20px)',
+    zIndex: 10,
+  },
+]
+
+function FlickCardStack() {
+  const [cards, setCards] = useState(stackCards)
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  const flickTopCard = () => {
+    if (isAnimating) return
+    setIsAnimating(true)
+    setTimeout(() => {
+      setCards(prev => {
+        const [top, ...rest] = prev
+        return [...rest, top]
+      })
+      setIsAnimating(false)
+    }, 500)
+  }
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute rounded-full bg-cyber-cyan/30 particle"
-          style={{
-            width: p.size,
-            height: p.size,
-            left: `${p.x}%`,
-            animationDuration: `${p.duration}s`,
-            animationDelay: `${p.delay}s`,
-            boxShadow: `0 0 ${p.size * 3}px rgba(0,212,255,0.5)`,
-          }}
-        />
-      ))}
+    <div
+      className="card-stack relative w-72 h-96 flex items-center justify-center cursor-pointer select-none"
+      onClick={flickTopCard}
+      data-cursor
+    >
+      <AnimatePresence mode="popLayout">
+        {cards.map((card, i) => {
+          const isTop = i === 0
+          const rotations = ['-2deg', '5deg', '-10deg']
+          const translates = [
+            [0, 0],
+            [20, -10],
+            [-20, 20],
+          ]
+          const zIndexes = [30, 20, 10]
+
+          return (
+            <motion.div
+              key={card.id}
+              className={`absolute w-64 h-80 ${card.bg} border-4 border-brutal-black p-6 flex flex-col justify-between`}
+              style={{ zIndex: zIndexes[i] }}
+              initial={false}
+              animate={{
+                rotate: parseFloat(rotations[i]),
+                x: translates[i][0],
+                y: translates[i][1],
+                boxShadow: isTop
+                  ? '8px 8px 0px 0px #0A0A0F'
+                  : '6px 6px 0px 0px #0A0A0F',
+              }}
+              exit={{
+                x: 350,
+                y: -200,
+                rotate: 45,
+                scale: 0.7,
+                opacity: 0,
+                transition: { duration: 0.45, ease: [0.36, 0, 0.66, -0.56] },
+              }}
+              whileHover={isTop ? { scale: 1.03, boxShadow: '12px 12px 0px 0px #0A0A0F' } : {}}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 28,
+              }}
+            >
+              {/* Badge */}
+              <div className={`sticker-badge ${card.badgeBg} ${card.badgeText} w-fit`}>
+                {card.label}
+              </div>
+
+              {/* Title */}
+              <div className={`font-display text-3xl font-black ${card.textColor} uppercase leading-tight`}>
+                {card.title.split('\n').map((line, j) => (
+                  <div key={j}>{line}</div>
+                ))}
+              </div>
+
+              {/* Icon */}
+              <div className="text-5xl">{card.icon}</div>
+
+              {isTop && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={`absolute bottom-2 right-2 font-mono text-xs ${card.textColor} opacity-60`}
+                >
+                  CLICK TO FLICK →
+                </motion.div>
+              )}
+            </motion.div>
+          )
+        })}
+      </AnimatePresence>
     </div>
   )
 }
 
+// ── Marquee Ticker ───────────────────────────────────────────────────────────
+const techStack = [
+  'REACT', 'NODE.JS', 'SOLIDITY', 'TAILWIND', 'TYPESCRIPT',
+  'NEXT.JS', 'FIGMA', 'PYTHON', 'REACT NATIVE', 'WEB3',
+  'REACT', 'NODE.JS', 'SOLIDITY', 'TAILWIND', 'TYPESCRIPT',
+  'NEXT.JS', 'FIGMA', 'PYTHON', 'REACT NATIVE', 'WEB3',
+]
+
+function MarqueeTicker() {
+  return (
+    <div className="bg-brutal-black border-b-4 border-brutal-black py-4 overflow-hidden flex">
+      <div className="animate-marquee flex gap-8 items-center whitespace-nowrap">
+        {techStack.map((tech, i) => (
+          <span key={i} className="flex items-center gap-8">
+            <span className="font-display font-black text-acid-green text-2xl uppercase tracking-widest">
+              {tech}
+            </span>
+            <span className="text-white text-xl">★</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ── Main Hero ────────────────────────────────────────────────────────────────
 export default function Hero() {
-  const [splineLoaded, setSplineLoaded] = useState(false)
+  const heroRef = useRef(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+
+  // Parallax transforms
+  const checkerY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
+  const cardsY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%'])
 
   const containerVariants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } },
+    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
   }
   const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } },
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1, y: 0,
+      transition: { type: 'spring', stiffness: 200, damping: 22 },
+    },
   }
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden grid-bg radial-glow noise-bg">
-      <FloatingParticles />
-
-      {/* Spline 3D — right side */}
-      <div className="absolute right-0 top-0 w-full md:w-[55%] h-full opacity-80 md:opacity-100">
-        <Suspense fallback={null}>
-          <Spline
-            scene="https://prod.spline.design/5nrCYR85JoGH9DGC/scene.splinecode"
-            onLoad={() => setSplineLoaded(true)}
-            style={{ width: '100%', height: '100%' }}
-          />
-        </Suspense>
-        {/* Fade mask so text is readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark via-cyber-dark/60 to-transparent md:from-cyber-dark md:via-cyber-dark/40 md:to-transparent" />
-      </div>
-
-      {/* Content — left side */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 w-full">
+    <>
+      {/* ── Hero Section ── */}
+      <section
+        id="hero"
+        ref={heroRef}
+        className="relative min-h-[90vh] flex flex-col md:flex-row items-center justify-center pt-20 overflow-hidden bg-caution-yellow border-b-4 border-brutal-black"
+      >
+        {/* Checker bg with parallax */}
         <motion.div
+          className="checker-bg absolute inset-[-100px] pointer-events-none"
+          style={{ y: checkerY }}
+        />
+
+        {/* Left — text content */}
+        <motion.div
+          className="flex-1 z-10 flex flex-col gap-6 items-start px-16 max-md:px-4 py-16"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-2xl"
+          style={{ y: textY }}
         >
-          {/* Tag line */}
-          <motion.div variants={itemVariants} className="flex items-center gap-2 mb-6">
-            <span className="h-px w-8 bg-cyber-cyan" />
-            <span className="font-mono text-xs text-cyber-cyan tracking-[0.2em] uppercase">
-              Available for opportunities
-            </span>
-            <span className="w-2 h-2 rounded-full bg-cyber-cyan animate-ping" />
+          {/* Tag badge */}
+          <motion.div variants={itemVariants}>
+            <div className="sticker-badge bg-brutal-black text-white transform -rotate-2">
+              FULL STACK DEVELOPER
+            </div>
           </motion.div>
 
           {/* Name */}
           <motion.h1
             variants={itemVariants}
-            className="font-display font-bold leading-[0.95] tracking-tight mb-6"
+            className="font-display font-black text-brutal-black uppercase leading-none text-[clamp(64px,10vw,100px)] tracking-tight"
           >
-            <span className="block text-6xl md:text-8xl text-white">Aritra</span>
-            <span className="block text-6xl md:text-8xl gradient-text">Dhar</span>
+            ARITRA<br />DHAR
           </motion.h1>
 
           {/* Typewriter role */}
-          <motion.div variants={itemVariants} className="font-mono text-xl md:text-2xl mb-4 h-8">
+          <motion.div variants={itemVariants} className="font-mono text-xl h-7">
             <TypewriterText words={roles} />
           </motion.div>
 
           {/* Description */}
           <motion.p
             variants={itemVariants}
-            className="text-white/50 text-base md:text-lg leading-relaxed mb-10 max-w-lg"
+            className="font-body-md text-body-lg font-bold bg-white p-5 border-4 border-brutal-black neobrutal-shadow max-w-lg text-on-surface"
           >
             Crafting immersive digital experiences at the intersection of{' '}
-            <span className="text-white/80">Web3</span>,{' '}
-            <span className="text-white/80">AI</span>, and{' '}
-            <span className="text-white/80">React</span>. National Hackathon Champion — CODE NIRVANA.
+            <span className="text-primary-container">Web3</span>,{' '}
+            <span className="text-secondary-container">AI</span>, and{' '}
+            <span className="text-primary-container">React</span>. National Hackathon Champion.
           </motion.p>
 
-          {/* CTA buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mb-14">
+          {/* CTAs */}
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mt-2">
             <Link to="projects" smooth duration={800} offset={-80} data-cursor>
               <motion.button
-                whileHover={{ scale: 1.03, boxShadow: '0 0 30px rgba(0,212,255,0.4)' }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-7 py-3 bg-cyber-cyan text-cyber-dark font-semibold rounded-lg text-sm"
+                className="brutal-btn bg-secondary-container text-white font-display font-bold px-8 py-4 border-4 border-brutal-black uppercase tracking-wide flex items-center gap-2 text-lg"
               >
-                View Projects <ChevronRight size={16} />
+                View Work <ArrowRight size={20} />
               </motion.button>
             </Link>
+
             <a href="/Aritra_DharCV.pdf" download data-cursor>
               <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-7 py-3 glass border border-white/10 hover:border-cyber-cyan/40 font-semibold rounded-lg text-sm text-white transition-colors duration-300"
+                className="brutal-btn bg-white text-brutal-black font-display font-bold px-8 py-4 border-4 border-brutal-black uppercase tracking-wide flex items-center gap-2 text-lg"
               >
-                Download CV
+                Resume <Download size={20} />
               </motion.button>
             </a>
           </motion.div>
 
-          {/* Social icons */}
-          <motion.div variants={itemVariants} className="flex items-center gap-5">
-            <span className="text-xs font-mono text-white/30 tracking-widest uppercase">Find me</span>
-            <div className="h-px w-6 bg-white/20" />
+          {/* Social links */}
+          <motion.div variants={itemVariants} className="flex items-center gap-4 mt-2">
             {[
               { icon: Github, href: 'https://github.com/AritraDhar567', label: 'GitHub' },
               { icon: Linkedin, href: 'https://www.linkedin.com/in/aritradhar567/', label: 'LinkedIn' },
@@ -178,34 +304,30 @@ export default function Hero() {
                 rel="noreferrer"
                 aria-label={label}
                 data-cursor
-                whileHover={{ y: -3, color: '#00d4ff' }}
-                className="text-white/40 hover:text-cyber-cyan transition-colors duration-200"
+                whileHover={{ y: -4, x: 2, backgroundColor: '#0A0A0F', color: '#f9f9f9' }}
+                whileTap={{ scale: 0.92 }}
+                className="p-3 border-4 border-brutal-black bg-white text-brutal-black neobrutal-shadow-sm transition-colors"
               >
                 <Icon size={20} />
               </motion.a>
             ))}
           </motion.div>
         </motion.div>
-      </div>
 
-      {/* Scroll prompt */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <Link to="about" smooth duration={800} offset={-80} data-cursor>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-2 text-white/30 hover:text-cyber-cyan transition-colors cursor-pointer"
-          >
-            <span className="font-mono text-xs tracking-widest uppercase">Scroll</span>
-            <ArrowDown size={16} />
-          </motion.div>
-        </Link>
-      </motion.div>
-    </section>
+        {/* Right — flick card stack */}
+        <motion.div
+          className="flex-1 z-10 flex items-center justify-center px-8 py-16"
+          style={{ y: cardsY }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, type: 'spring', stiffness: 180, damping: 22 }}
+        >
+          <FlickCardStack />
+        </motion.div>
+      </section>
+
+      {/* ── Marquee Ticker ── */}
+      <MarqueeTicker />
+    </>
   )
 }

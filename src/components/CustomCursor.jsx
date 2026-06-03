@@ -7,8 +7,10 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false)
   const [isClicking, setIsClicking] = useState(false)
 
-  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 }
-  const trailConfig = { damping: 40, stiffness: 150, mass: 0.8 }
+  // Fast main cursor
+  const springConfig = { damping: 28, stiffness: 500, mass: 0.3 }
+  // Slower, heavier trail ring
+  const trailConfig = { damping: 35, stiffness: 180, mass: 1 }
 
   const springX = useSpring(cursorX, springConfig)
   const springY = useSpring(cursorY, springConfig)
@@ -30,11 +32,19 @@ export default function CustomCursor() {
     window.addEventListener('mousedown', handleMouseDown)
     window.addEventListener('mouseup', handleMouseUp)
 
-    const interactables = document.querySelectorAll('a, button, [data-cursor]')
-    interactables.forEach(el => {
-      el.addEventListener('mouseenter', handleHoverIn)
-      el.addEventListener('mouseleave', handleHoverOut)
-    })
+    const attachListeners = () => {
+      const interactables = document.querySelectorAll('a, button, [data-cursor], input, textarea')
+      interactables.forEach(el => {
+        el.addEventListener('mouseenter', handleHoverIn)
+        el.addEventListener('mouseleave', handleHoverOut)
+      })
+      return interactables
+    }
+
+    const interactables = attachListeners()
+    // Re-attach on DOM change for dynamic elements
+    const observer = new MutationObserver(() => attachListeners())
+    observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       window.removeEventListener('mousemove', moveCursor)
@@ -44,57 +54,46 @@ export default function CustomCursor() {
         el.removeEventListener('mouseenter', handleHoverIn)
         el.removeEventListener('mouseleave', handleHoverOut)
       })
+      observer.disconnect()
     }
   }, [])
 
   return (
     <>
-      {/* Trail ring */}
+      {/* Outer ring — slow trail */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        style={{
-          x: trailX,
-          y: trailY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
+        style={{ x: trailX, y: trailY, translateX: '-50%', translateY: '-50%' }}
       >
         <motion.div
           animate={{
-            width: isHovering ? 48 : 32,
-            height: isHovering ? 48 : 32,
-            borderColor: isHovering ? 'rgba(247, 37, 133, 0.8)' : 'rgba(0, 212, 255, 0.5)',
-            scale: isClicking ? 0.8 : 1,
+            width: isHovering ? 52 : 36,
+            height: isHovering ? 52 : 36,
+            borderColor: isHovering ? '#FFD600' : '#0A0A0F',
+            borderWidth: isHovering ? '4px' : '3px',
+            rotate: isClicking ? 45 : 0,
           }}
-          transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+          transition={{ type: 'spring', damping: 22, stiffness: 280 }}
           style={{
-            borderRadius: '50%',
-            border: '1px solid rgba(0, 212, 255, 0.5)',
+            borderStyle: 'solid',
+            borderRadius: isHovering ? '0px' : '50%',
           }}
         />
       </motion.div>
 
-      {/* Main dot */}
+      {/* Inner dot — fast and precise */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
+        style={{ x: springX, y: springY, translateX: '-50%', translateY: '-50%' }}
       >
         <motion.div
           animate={{
-            width: isClicking ? 6 : 8,
-            height: isClicking ? 6 : 8,
-            backgroundColor: isHovering ? '#f72585' : '#00d4ff',
-            boxShadow: isHovering
-              ? '0 0 15px #f72585, 0 0 30px rgba(247,37,133,0.5)'
-              : '0 0 15px #00d4ff, 0 0 30px rgba(0,212,255,0.5)',
+            width: isClicking ? 5 : isHovering ? 10 : 8,
+            height: isClicking ? 5 : isHovering ? 10 : 8,
+            backgroundColor: isHovering ? '#FFD600' : '#0A0A0F',
+            borderRadius: isHovering ? '0px' : '50%',
           }}
-          transition={{ type: 'spring', damping: 20, stiffness: 400 }}
-          style={{ borderRadius: '50%' }}
+          transition={{ type: 'spring', damping: 20, stiffness: 500 }}
         />
       </motion.div>
     </>

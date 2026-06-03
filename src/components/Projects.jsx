@@ -1,6 +1,5 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Github, ExternalLink, Lock, Brain, Eye, ShoppingBag, Smartphone } from 'lucide-react'
 
 const projects = [
@@ -8,153 +7,175 @@ const projects = [
     title: 'Nirvana Health-Chain',
     subtitle: 'Blockchain Anti-Counterfeiting System',
     description:
-      'Immutable drug supply chain tracking with complex hashing and tamper-proof verification. HackHeritage 2024 winning project for Drug Inventory Management.',
+      'Immutable drug supply chain tracking with complex hashing and tamper-proof verification. HackHeritage 2024 winning project.',
     icon: Lock,
-    color: '#00d4ff',
+    bg: 'bg-secondary-fixed',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-caution-yellow',
     tags: ['Solidity', 'React', 'Ethers.js', 'HardHat', 'IPFS'],
     github: 'https://github.com/AritraDhar567/Nirvana',
-    live: null,
     featured: true,
+    span: 'md:col-span-2',
   },
   {
-    title: 'God\'s Eye AI System',
+    title: "God's Eye AI",
     subtitle: 'Advanced Real-Time Surveillance AI',
     description:
-      'AI-powered camera surveillance with privacy enhancement, content blurring, deepfake detection, image purity measurement and zero-shot detection for copyright enforcement.',
+      'AI-powered camera surveillance with deepfake detection, content blurring, and copyright enforcement.',
     icon: Eye,
-    color: '#f72585',
-    tags: ['Python', 'OpenCV', 'Scikit-Learn', 'Flask', 'CV'],
+    bg: 'bg-acid-green',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-white',
+    tags: ['Python', 'OpenCV', 'Scikit-Learn', 'Flask'],
     github: 'https://godseyeai567.netlify.app/',
-    live: null,
     featured: true,
+    span: 'md:row-span-2',
   },
   {
     title: 'Meta-Mark AI',
     subtitle: "India's First Legal Metrology Checker",
     description:
-      'AI-based compliance checker with real-time analysis and browser extension support for e-commerce platforms like Flipkart and Amazon. National Hackathon Champion project.',
+      'AI-based compliance checker with real-time analysis and browser extension for e-commerce. National Hackathon Champion.',
     icon: ShoppingBag,
-    color: '#7c3aed',
+    bg: 'bg-tertiary-fixed',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-white',
     tags: ['React', 'Extension API', 'AI', 'Node.js'],
-    github: null,
-    live: null,
-    featured: true,
     badge: '🏆 National Champion',
+    span: '',
   },
   {
     title: 'Nirvana Smart-App',
     subtitle: 'Consumer Medicine Ordering App',
     description:
-      'Mobile app for medicine ordering with authenticity verification and efficient payment system. Built for Smart Bengal Hackathon 2025.',
+      'Mobile app for medicine ordering with authenticity verification. Built for Smart Bengal Hackathon 2025.',
     icon: Smartphone,
-    color: '#06d6a0',
+    bg: 'bg-primary-container',
+    chipBg: 'bg-caution-yellow',
+    chipText: 'text-brutal-black',
     tags: ['React Native', 'Node.js', 'UI/UX'],
     github: 'https://github.com/AritraDhar567/app',
-    live: null,
-    featured: false,
+    span: '',
   },
   {
     title: 'Marketing Website UI',
     subtitle: 'High-Retention Landing Page',
     description:
-      'Modern marketing UI for influencers and professionals — designed for maximum engagement and conversion with smooth animations.',
+      'Modern marketing UI for influencers — designed for maximum engagement with smooth animations.',
     icon: Brain,
-    color: '#ffd60a',
+    bg: 'bg-caution-yellow',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-white',
     tags: ['React', 'TailwindCSS', 'Framer Motion'],
     github: 'https://smm-solution-website-by-aritra.netlify.app/',
-    live: null,
-    featured: false,
+    span: '',
   },
 ]
 
-function ProjectCard({ project, index }) {
-  const cardRef = useRef(null)
+// Cursor surface tilt
+function useTilt(ref) {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 150, damping: 20 })
-  const springY = useSpring(y, { stiffness: 150, damping: 20 })
+  const springX = useSpring(x, { stiffness: 200, damping: 22 })
+  const springY = useSpring(y, { stiffness: 200, damping: 22 })
   const rotateX = useTransform(springY, [-0.5, 0.5], [8, -8])
   const rotateY = useTransform(springX, [-0.5, 0.5], [-8, 8])
 
   const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect()
+    const rect = ref.current?.getBoundingClientRect()
     if (!rect) return
     x.set((e.clientX - rect.left) / rect.width - 0.5)
     y.set((e.clientY - rect.top) / rect.height - 0.5)
   }
   const handleMouseLeave = () => { x.set(0); y.set(0) }
 
+  return { rotateX, rotateY, handleMouseMove, handleMouseLeave }
+}
+
+function ProjectCard({ project, index }) {
+  const cardRef = useRef(null)
+  const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt(cardRef)
   const Icon = project.icon
 
+  const isTextWhite = project.bg === 'bg-primary-container' || project.bg === 'bg-acid-green'
+
   return (
-    <motion.div
+    <motion.article
       ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.7 }}
+      transition={{ delay: index * 0.08, type: 'spring', stiffness: 180, damping: 22 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 1000, transformStyle: 'preserve-3d' }}
-      className="relative glass rounded-2xl p-6 border border-white/5 overflow-hidden shine-card group"
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 1000,
+        transformStyle: 'preserve-3d',
+      }}
+      whileHover={{
+        boxShadow: '12px 12px 0px 0px #0A0A0F',
+        translateX: -4,
+        translateY: -4,
+      }}
+      className={`${project.bg} ${project.span} border-4 border-brutal-black neobrutal-shadow p-6 flex flex-col justify-between relative group cursor-pointer overflow-hidden`}
       data-cursor
     >
-      {/* Glow on hover */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
-        style={{ background: `radial-gradient(circle at 50% 0%, ${project.color}10, transparent 70%)` }}
-      />
-      {/* Top border glow */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: `linear-gradient(90deg, transparent, ${project.color}60, transparent)` }}
-      />
-
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: `${project.color}15`, border: `1px solid ${project.color}30` }}
-        >
-          <Icon size={18} style={{ color: project.color }} />
+      {/* Badge */}
+      {project.badge && (
+        <div className="absolute top-4 right-4 sticker-badge bg-caution-yellow text-brutal-black z-10">
+          {project.badge}
         </div>
-        <div className="flex items-center gap-2">
-          {project.badge && (
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/20">
-              {project.badge}
-            </span>
-          )}
+      )}
+
+      {/* Icon + links row */}
+      <div className="flex items-start justify-between mb-5">
+        <div className="w-12 h-12 bg-white border-4 border-brutal-black flex items-center justify-center neobrutal-shadow-sm">
+          <Icon size={22} className="text-brutal-black" />
+        </div>
+        <div className="flex gap-2">
           {project.github && (
-            <a href={project.github} target="_blank" rel="noreferrer" data-cursor
-              className="text-white/30 hover:text-white transition-colors p-1">
-              <Github size={16} />
-            </a>
-          )}
-          {project.live && (
-            <a href={project.live} target="_blank" rel="noreferrer" data-cursor
-              className="text-white/30 hover:text-cyber-cyan transition-colors p-1">
-              <ExternalLink size={16} />
-            </a>
+            <motion.a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor
+              whileHover={{ scale: 1.1, y: -2 }}
+              className="w-9 h-9 bg-white border-3 border-brutal-black flex items-center justify-center neobrutal-shadow-sm hover:bg-caution-yellow transition-colors"
+              onClick={e => e.stopPropagation()}
+            >
+              <Github size={15} className="text-brutal-black" />
+            </motion.a>
           )}
         </div>
       </div>
 
       {/* Title */}
-      <h3 className="font-display font-bold text-lg text-white mb-1 group-hover:text-cyber-cyan transition-colors duration-300">
-        {project.title}
-      </h3>
-      <p className="text-xs font-mono mb-3" style={{ color: project.color }}>{project.subtitle}</p>
-      <p className="text-white/50 text-sm leading-relaxed mb-5">{project.description}</p>
+      <div className="flex-1">
+        <h3 className="font-display font-black text-xl text-brutal-black uppercase tracking-tight mb-1 group-hover:underline decoration-4 underline-offset-2">
+          {project.title}
+        </h3>
+        <p className="font-mono text-xs font-bold text-on-surface-variant mb-3 uppercase">
+          {project.subtitle}
+        </p>
+        <p className="font-body-md text-sm text-on-surface leading-relaxed">
+          {project.description}
+        </p>
+      </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2">
-        {project.tags.map((tag) => (
-          <span key={tag} className="px-2 py-0.5 rounded text-xs font-mono text-white/40 bg-white/5 border border-white/10">
+      <div className="flex flex-wrap gap-2 mt-5">
+        {project.tags.map(tag => (
+          <span
+            key={tag}
+            className={`${project.chipBg} ${project.chipText} font-mono text-xs font-bold px-3 py-1 border-2 border-brutal-black uppercase`}
+          >
             {tag}
           </span>
         ))}
       </div>
-    </motion.div>
+    </motion.article>
   )
 }
 
@@ -163,32 +184,37 @@ export default function Projects() {
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="projects" ref={ref} className="py-32 relative">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute right-0 bottom-0 w-96 h-96 bg-cyber-pink/8 rounded-full blur-[120px]" />
-      </div>
+    <section id="projects" ref={ref} className="py-28 relative bg-surface-container-low border-y-4 border-brutal-black">
+      <div className="max-w-7xl mx-auto px-16 max-md:px-4">
 
-      <div className="max-w-7xl mx-auto px-6">
+        {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, x: -40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6 }}
           className="flex items-center gap-4 mb-6"
         >
-          <span className="font-mono text-xs text-cyber-cyan tracking-[0.2em] uppercase">04 / Projects</span>
-          <span className="flex-1 h-px bg-white/10 max-w-[80px]" />
+          <span className="font-mono text-xs font-bold tracking-[0.2em] uppercase text-on-surface-variant">
+            04 / Projects
+          </span>
+          <span className="h-[4px] w-16 bg-brutal-black" />
         </motion.div>
 
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display font-bold text-5xl md:text-6xl text-white mb-16"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-display font-black text-brutal-black uppercase text-[clamp(48px,7vw,80px)] leading-none tracking-tight mb-16"
         >
-          What I've <span className="gradient-text">Built</span>
+          Selected<br />
+          <span className="relative inline-block">
+            Works
+            <span className="absolute bottom-0 left-0 right-0 h-[8px] bg-secondary-container" />
+          </span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Bento grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
           {projects.map((project, i) => (
             <ProjectCard key={project.title} project={project} index={i} />
           ))}

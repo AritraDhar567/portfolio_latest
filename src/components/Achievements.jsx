@@ -1,28 +1,35 @@
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Trophy, Medal, Star, Award } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
+import { Trophy, Medal, Award, Star } from 'lucide-react'
 
 const achievements = [
   {
     title: 'Smart India National Hackathon 2025',
-    position: 'National Champion 🏆',
+    position: 'National Champion',
     team: 'CODE NIRVANA (PS25057)',
     project: 'Meta-Mark AI',
     location: 'IIT Kharagpur',
     icon: Trophy,
-    color: '#ffd60a',
-    rank: 1,
+    bg: 'bg-caution-yellow',
+    textColor: 'text-brutal-black',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-caution-yellow',
+    rankLabel: '#1',
+    emoji: '🏆',
   },
   {
     title: 'HackHeritage 2024',
-    position: '#1 Winning Team 🥇',
+    position: '#1 Winning Team',
     team: 'CODE NIRVANA',
     project: 'Nirvana Health-Chain',
     location: 'Heritage Institute of Technology',
     icon: Trophy,
-    color: '#00d4ff',
-    rank: 1,
+    bg: 'bg-primary-container',
+    textColor: 'text-white',
+    chipBg: 'bg-caution-yellow',
+    chipText: 'text-brutal-black',
+    rankLabel: '#1',
+    emoji: '🥇',
   },
   {
     title: 'Smart Bengal Hackathon 2025',
@@ -31,8 +38,12 @@ const achievements = [
     project: 'Nirvana Smart-App',
     location: 'RCCIT, Kolkata',
     icon: Medal,
-    color: '#7c3aed',
-    rank: 3,
+    bg: 'bg-white',
+    textColor: 'text-brutal-black',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-white',
+    rankLabel: 'TOP',
+    emoji: '🥈',
   },
   {
     title: 'Smart India Hackathon 2024',
@@ -41,111 +52,145 @@ const achievements = [
     project: 'PS 1627',
     location: 'National Level',
     icon: Award,
-    color: '#f72585',
-    rank: 6,
+    bg: 'bg-acid-green',
+    textColor: 'text-brutal-black',
+    chipBg: 'bg-brutal-black',
+    chipText: 'text-white',
+    rankLabel: 'TOP 6',
+    emoji: '🏅',
   },
 ]
+
+function AchievementCard({ a, index }) {
+  const cardRef = useRef(null)
+
+  const handleMouseMove = (e) => {
+    const el = cardRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    const rotX = ((e.clientY - rect.top - cy) / cy) * -6
+    const rotY = ((e.clientX - rect.left - cx) / cx) * 6
+    el.style.setProperty('--rotate-x', `${rotX}deg`)
+    el.style.setProperty('--rotate-y', `${rotY}deg`)
+    el.classList.add('interactive-surface')
+  }
+  const handleMouseLeave = () => {
+    const el = cardRef.current
+    if (!el) return
+    el.style.setProperty('--rotate-x', '0deg')
+    el.style.setProperty('--rotate-y', '0deg')
+  }
+
+  const Icon = a.icon
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.12, type: 'spring', stiffness: 180, damping: 22 }}
+      whileHover={{ translateX: -4, translateY: -4, boxShadow: '12px 12px 0px 0px #0A0A0F' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`${a.bg} ${a.textColor} border-4 border-brutal-black neobrutal-shadow p-7 relative overflow-hidden`}
+    >
+      {/* Giant rank watermark */}
+      <div className="absolute -right-4 -bottom-4 font-display font-black text-[120px] leading-none opacity-10 select-none">
+        {a.rankLabel}
+      </div>
+
+      {/* Top row: icon + emoji */}
+      <div className="flex items-start justify-between mb-6 relative z-10">
+        <div className="w-14 h-14 bg-white border-4 border-brutal-black flex items-center justify-center neobrutal-shadow-sm">
+          <Icon size={26} className="text-brutal-black" />
+        </div>
+        <span className="text-5xl">{a.emoji}</span>
+      </div>
+
+      {/* Title */}
+      <div className="relative z-10 mb-4">
+        <h3 className="font-display font-black text-xl uppercase leading-tight mb-2">
+          {a.title}
+        </h3>
+        <div className={`sticker-badge ${a.chipBg} ${a.chipText} inline-block`}>
+          {a.position}
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="relative z-10 space-y-2 text-sm font-mono">
+        <div className="flex items-center gap-2">
+          <Star size={12} />
+          <span className="opacity-80">Project:</span>
+          <span className="font-bold">{a.project}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Trophy size={12} />
+          <span className="opacity-80">Team:</span>
+          <span className="font-bold">{a.team}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Medal size={12} />
+          <span className="font-bold">{a.location}</span>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function Achievements() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="achievements" ref={ref} className="py-32 relative">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute left-0 top-1/2 w-80 h-80 bg-yellow-500/5 rounded-full blur-[100px]" />
-        <div className="absolute right-1/3 bottom-0 w-64 h-64 bg-cyber-cyan/5 rounded-full blur-[80px]" />
-      </div>
+    <section id="achievements" ref={ref} className="py-28 relative">
+      <div className="max-w-7xl mx-auto px-16 max-md:px-4">
 
-      <div className="max-w-7xl mx-auto px-6">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-4 mb-6"
+        >
+          <span className="font-mono text-xs font-bold tracking-[0.2em] uppercase text-on-surface-variant">
+            05 / Achievements
+          </span>
+          <span className="h-[4px] w-16 bg-brutal-black" />
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="flex items-center gap-4 mb-6"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-4"
         >
-          <span className="font-mono text-xs text-cyber-cyan tracking-[0.2em] uppercase">05 / Achievements</span>
-          <span className="flex-1 h-px bg-white/10 max-w-[80px]" />
+          <h2 className="font-display font-black text-brutal-black uppercase text-[clamp(48px,7vw,80px)] leading-none tracking-tight">
+            Hall of
+            <br />
+            <span className="relative inline-block">
+              Fame
+              <span className="absolute bottom-0 left-0 right-0 h-[8px] bg-caution-yellow" />
+            </span>
+          </h2>
         </motion.div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display font-bold text-5xl md:text-6xl text-white mb-4"
-        >
-          Hall of <span className="gradient-text">Fame</span>
-        </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.2 }}
-          className="text-white/40 text-base mb-16 max-w-xl"
+          className="font-mono text-sm text-on-surface-variant mb-16 max-w-xl"
         >
           Competing under pressure, delivering under deadlines. These aren't participation trophies.
         </motion.p>
 
+        {/* Achievement cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {achievements.map((a, i) => (
-            <motion.div
-              key={a.title}
-              initial={{ opacity: 0, y: 40, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.6, type: 'spring', stiffness: 120 }}
-              whileHover={{ y: -6, boxShadow: `0 20px 60px ${a.color}20` }}
-              className="relative glass rounded-2xl p-7 border border-white/5 overflow-hidden group"
-            >
-              {/* Large background icon */}
-              <a.icon
-                size={120}
-                className="absolute -right-6 -bottom-6 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-500"
-                style={{ color: a.color }}
-              />
-
-              {/* Glow corner */}
-              <div
-                className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 -translate-y-1/2 translate-x-1/2"
-                style={{ background: `radial-gradient(circle, ${a.color}, transparent 70%)` }}
-              />
-
-              <div className="flex items-start gap-4 mb-5">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1"
-                  style={{
-                    backgroundColor: `${a.color}15`,
-                    border: `1px solid ${a.color}30`,
-                    boxShadow: `0 0 20px ${a.color}20`,
-                  }}
-                >
-                  <a.icon size={22} style={{ color: a.color }} />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-xl text-white leading-tight">{a.title}</h3>
-                  <span
-                    className="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-bold font-mono"
-                    style={{ backgroundColor: `${a.color}20`, color: a.color }}
-                  >
-                    {a.position}
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-2 text-sm text-white/50">
-                <div className="flex items-center gap-2">
-                  <Star size={12} style={{ color: a.color }} />
-                  <span>Project: <span className="text-white/70 font-medium">{a.project}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Trophy size={12} style={{ color: a.color }} />
-                  <span>Team: <span className="text-white/70 font-medium">{a.team}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Medal size={12} style={{ color: a.color }} />
-                  <span>{a.location}</span>
-                </div>
-              </div>
-            </motion.div>
+            <AchievementCard key={a.title} a={a} index={i} />
           ))}
         </div>
       </div>

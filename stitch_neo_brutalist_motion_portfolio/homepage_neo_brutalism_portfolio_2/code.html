@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aritra Dhar | Neo-Brutalist Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "primary": "#630ed4",
+                        "tertiary-fixed": "#b4ebff",
+                        "on-tertiary-fixed": "#001f27",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-tertiary": "#ffffff",
+                        "brutal-black": "#0A0A0F",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#7c3aed",
+                        "surface-container": "#eeeeee",
+                        "surface": "#f9f9f9",
+                        "acid-green": "#ADFF2F",
+                        "on-primary-container": "#ede0ff",
+                        "secondary": "#b5005d",
+                        "on-surface-variant": "#4a4455",
+                        "inverse-on-surface": "#f0f1f1",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "surface-variant": "#e2e2e2",
+                        "surface-tint": "#732ee4",
+                        "secondary-fixed": "#ffd9e1",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-secondary-container": "#fffbff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#3cd7ff",
+                        "outline-variant": "#ccc3d8",
+                        "caution-yellow": "#FFD600",
+                        "on-surface": "#1a1c1c",
+                        "on-primary-fixed": "#25005a",
+                        "on-secondary-fixed": "#3f001c",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-container-highest": "#e2e2e2",
+                        "tertiary-container": "#007088",
+                        "surface-bright": "#f9f9f9",
+                        "secondary-fixed-dim": "#ffb1c6",
+                        "background": "#f9f9f9",
+                        "tertiary": "#005669",
+                        "on-tertiary-fixed-variant": "#004e5f",
+                        "secondary-container": "#e20476",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#8e0048",
+                        "on-background": "#1a1c1c",
+                        "outline": "#7b7487",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-low": "#f3f3f4",
+                        "on-tertiary-container": "#bcedff",
+                        "surface-dim": "#dadada",
+                        "inverse-primary": "#d2bbff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "shadow-offset": "8px",
+                        "gutter": "24px",
+                        "border-width": "4px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "label-code": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["80px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-code": ["14px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    },
+                    "keyframes": {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' }
+                        }
+                    },
+                    "animation": {
+                        'marquee': 'marquee 20s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9f9;
+        }
+        
+        .body-grid-bg {
+            position: fixed;
+            inset: -200px;
+            background-image: radial-gradient(#0A0A0F 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .neobrutal-shadow {
+            box-shadow: 8px 8px 0px 0px #0A0A0F;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        button.neobrutal-shadow:hover, a.neobrutal-shadow:hover {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0px 0px #0A0A0F;
+        }
+        button.neobrutal-shadow:active, a.neobrutal-shadow:active {
+            transform: translate(8px, 8px);
+            box-shadow: 0px 0px 0px 0px #0A0A0F;
+        }
+
+        /* Project Card Hover Pop */
+        .project-card:hover {
+            transform: translate(-4px, -4px) !important;
+            box-shadow: 12px 12px 0px 0px #0A0A0F !important;
+        }
+
+        .card-stack {
+            perspective: 1000px;
+        }
+        
+        .card-stack-item {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom right;
+        }
+
+        .card-flicking {
+            transform: translate(120%, -50%) rotate(45deg) !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Initial stack transforms */
+        .stack-0 { transform: rotate(-10deg) translate(-20px, 20px); z-index: 10; }
+        .stack-1 { transform: rotate(5deg) translate(20px, -10px); z-index: 20; }
+        .stack-2 { transform: rotate(-2deg); z-index: 30; }
+
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<div class="body-grid-bg" id="global-grid-bg"></div>
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-brutal-black font-display-xl text-body-lg border-b-4 border-brutal-black sticky top-0 z-50 shadow-[8px_8px_0px_0px_#0A0A0F]">
+<div class="flex justify-between items-center w-full px-margin-desktop h-20 max-md:px-margin-mobile">
+<a class="font-display-xl text-headline-md font-black text-on-surface dark:text-surface-bright uppercase tracking-tighter" href="#">Aritra Dhar</a>
+<div class="hidden md:flex gap-4 items-center">
+<a class="text-on-surface dark:text-surface-variant font-bold hover:bg-caution-yellow hover:text-brutal-black px-4 py-1 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none border-2 border-transparent hover:border-brutal-black" href="#work">Work</a>
+<a class="text-on-surface dark:text-surface-variant font-bold hover:bg-caution-yellow hover:text-brutal-black px-4 py-1 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none border-2 border-transparent hover:border-brutal-black" href="#about">About</a>
+<a class="text-on-surface dark:text-surface-variant font-bold hover:bg-caution-yellow hover:text-brutal-black px-4 py-1 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none border-2 border-transparent hover:border-brutal-black" href="#skills">Skills</a>
+<a class="text-on-surface dark:text-surface-variant font-bold hover:bg-caution-yellow hover:text-brutal-black px-4 py-1 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none border-2 border-transparent hover:border-brutal-black" href="#contact">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary-container font-bold px-6 py-2 border-4 border-brutal-black neobrutal-shadow hidden md:block uppercase tracking-wide">
+                Hire Me
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="min-h-[80vh] flex flex-col md:flex-row items-center justify-center px-margin-desktop max-md:px-margin-mobile py-20 gap-12 relative overflow-hidden bg-caution-yellow border-b-4 border-brutal-black" id="hero-section">
+<div class="absolute inset-[-100px] opacity-10 pointer-events-none will-change-transform" id="hero-checker-bg" style="background-image: linear-gradient(45deg, #0A0A0F 25%, transparent 25%, transparent 75%, #0A0A0F 75%, #0A0A0F), linear-gradient(45deg, #0A0A0F 25%, transparent 25%, transparent 75%, #0A0A0F 75%, #0A0A0F); background-size: 60px 60px; background-position: 0 0, 30px 30px;"></div>
+<div class="flex-1 z-10 flex flex-col gap-6 items-start">
+<div class="inline-block bg-brutal-black text-white font-label-code px-4 py-2 border-4 border-brutal-black neobrutal-shadow transform -rotate-2">
+                FULL STACK DEVELOPER
+            </div>
+<h1 class="font-display-xl text-display-xl max-md:text-headline-lg-mobile text-brutal-black uppercase leading-none">
+                ARITRA<br/>DHAR
+            </h1>
+<p class="font-body-lg text-body-lg max-w-lg font-bold bg-white p-4 border-4 border-brutal-black neobrutal-shadow">
+                Specializing in React, Node.js, and creating digital experiences with unapologetic, chaotic design.
+            </p>
+<button class="mt-4 bg-secondary-container text-white font-headline-md text-headline-md max-md:text-body-lg px-8 py-4 border-4 border-brutal-black neobrutal-shadow uppercase flex items-center gap-2 group">
+                Let's Talk <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="flex-1 z-10 w-full relative h-[400px] card-stack flex items-center justify-center cursor-pointer">
+<!-- Card 1 -->
+<div class="absolute w-64 h-80 bg-primary-container border-4 border-brutal-black neobrutal-shadow p-6 flex flex-col justify-between card-stack-item stack-0" data-index="0">
+<div class="font-label-code bg-white text-brutal-black px-2 py-1 inline-block border-2 border-brutal-black w-fit">03. DESIGN</div>
+<div class="font-headline-lg text-white uppercase break-words leading-tight">UI/UX<br/>Chaos</div>
+<span class="material-symbols-outlined text-6xl text-white">brush</span>
+</div>
+<!-- Card 2 -->
+<div class="absolute w-64 h-80 bg-acid-green border-4 border-brutal-black neobrutal-shadow p-6 flex flex-col justify-between card-stack-item stack-1" data-index="1">
+<div class="font-label-code bg-brutal-black text-white px-2 py-1 inline-block border-2 border-brutal-black w-fit">02. BACKEND</div>
+<div class="font-headline-lg text-brutal-black uppercase break-words leading-tight">Node.js<br/>Power</div>
+<span class="material-symbols-outlined text-6xl text-brutal-black">dns</span>
+</div>
+<!-- Card 3 -->
+<div class="absolute w-64 h-80 bg-white border-4 border-brutal-black neobrutal-shadow p-6 flex flex-col justify-between card-stack-item stack-2" data-index="2">
+<div class="font-label-code bg-caution-yellow text-brutal-black px-2 py-1 inline-block border-2 border-brutal-black w-fit">01. FRONTEND</div>
+<div class="font-headline-lg text-brutal-black uppercase break-words leading-tight">React<br/>Magic</div>
+<span class="material-symbols-outlined text-6xl text-brutal-black">code</span>
+</div>
+</div>
+</header>
+<!-- Marquee Tech Stack -->
+<div class="bg-brutal-black py-4 border-b-4 border-brutal-black overflow-hidden flex whitespace-nowrap">
+<div class="animate-marquee flex gap-8 items-center font-display-xl text-headline-md text-acid-green uppercase tracking-widest">
+<span>REACT</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>NODE.JS</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>TAILWIND</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>TYPESCRIPT</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>NEXT.JS</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>FIGMA</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<!-- Duplicate for infinite loop illusion -->
+<span>REACT</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>NODE.JS</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>TAILWIND</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+<span>TYPESCRIPT</span> <span class="material-symbols-outlined text-white text-2xl">star</span>
+</div>
+</div>
+<!-- Main Content Grid -->
+<main class="px-margin-desktop max-md:px-margin-mobile py-20 relative z-10">
+<!-- About Section -->
+<section class="mb-32 relative" id="about">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5 bg-tertiary-container border-4 border-brutal-black neobrutal-shadow p-8 flex items-center justify-center transform -rotate-1 relative overflow-hidden min-h-[400px]">
+<img alt="" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80" data-alt="A gritty, high-contrast black and white portrait photo of a young, stylish male developer wearing thick-rimmed glasses..." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8GO-PC9WHmU7suR_Qjnp-1d82KgFY8FvHd1SQdaTuSTaPFUcPhD1D2zjvx1PDEz9NHO631TYFi2QHVNme2N4lC3tvQB_R0OuDjNOU3pTTrvdUk9AiSaUG4UZFAQox2-2YeX5bkFgz8t3nkoJoh7IR8s8NNylpOWeO-Cpls0eB-5ovRyLgpCKwKbU1S63GdjVVh7BoSUf2f434LkACr04fYRrdxwC14iNfyFyVQzz_WisxWu3fGBn1aGf6HH-IjqanAj68iNrPPzH0"/>
+<div class="absolute bottom-4 right-4 bg-acid-green border-4 border-brutal-black px-4 py-2 font-label-code text-brutal-black neobrutal-shadow font-bold">
+                        ARITRA.IMG
+                    </div>
+</div>
+<div class="md:col-span-7 flex flex-col justify-center gap-6">
+<div class="inline-block bg-primary-container text-white font-headline-md px-6 py-2 border-4 border-brutal-black neobrutal-shadow w-fit transform rotate-2">
+                        About The Chaos
+                    </div>
+<div class="bg-white border-4 border-brutal-black neobrutal-shadow p-8 relative">
+<span class="material-symbols-outlined absolute top-4 right-4 text-4xl text-outline">format_quote</span>
+<p class="font-body-lg text-body-lg text-on-surface mb-4">
+                            I don't just write code; I architect digital experiences that refuse to be ignored. My approach blends robust backend logic with striking, unapologetic frontend designs.
+                        </p>
+<p class="font-label-code text-label-code text-on-surface-variant border-l-4 border-secondary-container pl-4">
+                            "Functionality is mandatory. Personality is necessary."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Projects Bento Grid -->
+<section class="mb-32" id="work">
+<h2 class="font-display-xl text-headline-lg max-md:text-headline-lg-mobile uppercase border-b-8 border-brutal-black inline-block mb-12 pb-2">Selected Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-[300px]">
+<!-- Project 1: Large -->
+<article class="md:col-span-2 bg-secondary-fixed border-4 border-brutal-black neobrutal-shadow project-card p-6 relative group overflow-hidden flex flex-col justify-end cursor-pointer">
+<div class="absolute inset-0 bg-brutal-black/10 transition-colors group-hover:bg-transparent z-10"></div>
+<img alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A vibrant, chaotic web dashboard interface showing complex analytics with bold, chunky typography..." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6GUY_AoSoJxpZWk6mkEM3BrRwErgYrplWLCvWjpDsibwlZrGamKURAJBMvp1WHkrKuyv1sqCmL--V7uDH4LEJ6GSw4oixCGvCw52k0GqEKlqUEixwk23cF4lVdLQgbFgSxjzxlIVkAChldz1On8lnB0Jk24dlGKQgJ5ZvbBtWS1IllVW20UayQ1p7H4Kp4c7NhXrq6lJ-f6bIXXbmiosNJTicJivQoXbiff3x1CelHyMzgeL7IUZ22y2CRX6J6dj43KzeCJ12CI1H"/>
+<div class="relative z-20 bg-white border-4 border-brutal-black p-4 w-fit transform -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-headline-md uppercase">FinTech Chaos</h3>
+<div class="flex gap-2 mt-2">
+<span class="bg-brutal-black text-white font-label-code text-xs px-2 py-1">REACT</span>
+<span class="bg-brutal-black text-white font-label-code text-xs px-2 py-1">D3.JS</span>
+</div>
+</div>
+</article>
+<!-- Project 2: Tall -->
+<article class="md:row-span-2 bg-acid-green border-4 border-brutal-black neobrutal-shadow project-card p-6 flex flex-col relative group cursor-pointer">
+<div class="flex-1 border-4 border-brutal-black bg-white mb-4 overflow-hidden relative">
+<img alt="" class="absolute inset-0 w-full h-full object-cover" data-alt="A minimalist mobile app screen design featuring a bold, chunky typography layout..." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5uL-12SeryrQ0fTMrAFBOFHdBFoodXSM7HhW2pQmlCeGdVLes_SqjUjT5RRG_Kl6fKfuleozadZjR-KOQQ88-3lM4sZMKBCh8F3EeX54GUopzfW2jN2ZQ4P9UbwmFmTuoKKKXirocuzyAieCGcbqooW9TohEsjf6gGPS-H9PMh1RxTe2-z1nAvTQ6qqIbV_coSWrvM4IHAWGzKNH4WOm227DEAtRlRf5AOTGOTe5K6NwdT0WoUX_amV8RVKse7d18j6SdVugNH0LE"/>
+</div>
+<div class="bg-brutal-black text-white p-4 border-4 border-transparent group-hover:border-caution-yellow transition-colors">
+<h3 class="font-headline-md text-headline-md uppercase mb-2">Mindful App</h3>
+<p class="font-label-code text-sm">React Native / Expo / Zustand</p>
+</div>
+<button class="absolute top-4 right-4 bg-white border-4 border-brutal-black w-12 h-12 flex items-center justify-center rounded-full neobrutal-shadow group-hover:bg-caution-yellow">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+</article>
+<!-- Project 3: Standard -->
+<article class="bg-tertiary-fixed border-4 border-brutal-black neobrutal-shadow project-card p-6 flex flex-col justify-between group cursor-pointer transform transition-transform">
+<div>
+<span class="material-symbols-outlined text-4xl mb-4">shopping_cart_checkout</span>
+<h3 class="font-headline-md text-headline-md uppercase">E-Com Brutal</h3>
+</div>
+<div class="font-label-code text-brutal-black bg-white px-2 py-1 border-2 border-brutal-black w-fit">NEXT.JS + STRIPE</div>
+</article>
+<!-- Project 4: Standard -->
+<article class="bg-primary-container border-4 border-brutal-black neobrutal-shadow project-card p-6 flex flex-col justify-between group cursor-pointer text-white transform transition-transform">
+<div>
+<span class="material-symbols-outlined text-4xl mb-4">api</span>
+<h3 class="font-headline-md text-headline-md uppercase text-white">Data Pipeline</h3>
+</div>
+<div class="font-label-code text-brutal-black bg-caution-yellow px-2 py-1 border-2 border-brutal-black w-fit">NODE / POSTGRES</div>
+</article>
+</div>
+</section>
+<!-- Contact Banner -->
+<section class="bg-secondary-container border-4 border-brutal-black neobrutal-shadow p-12 text-center relative overflow-hidden" id="contact">
+<!-- Decorative Elements -->
+<span class="material-symbols-outlined absolute -top-10 -left-10 text-[150px] text-brutal-black opacity-20 transform -rotate-12">mail</span>
+<span class="material-symbols-outlined absolute -bottom-10 -right-10 text-[150px] text-brutal-black opacity-20 transform rotate-12">send</span>
+<h2 class="font-display-xl text-display-xl max-md:text-headline-lg-mobile text-white uppercase mb-8 relative z-10">Ready to break<br/>some rules?</h2>
+<button class="bg-caution-yellow text-brutal-black font-headline-md text-headline-md px-10 py-4 border-4 border-brutal-black neobrutal-shadow uppercase hover:bg-white transition-colors relative z-10">
+                Email Me Directly
+            </button>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-xl border-4 border-brutal-black md:hidden shadow-[8px_8px_0px_0px_#0A0A0F] z-50 flex justify-around items-center p-4 bg-surface dark:bg-brutal-black font-body-md text-label-code">
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:bg-secondary-container rounded-lg transition-colors" href="#home">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-xs mt-1 font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center p-2 bg-primary text-on-primary rounded-lg border-2 border-brutal-black scale-110" href="#work">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">reorder</span>
+<span class="text-xs mt-1 font-bold">Work</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:bg-secondary-container rounded-lg transition-colors" href="#about">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-xs mt-1 font-bold">About</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:bg-secondary-container rounded-lg transition-colors" href="#contact">
+<span class="material-symbols-outlined text-2xl">mail</span>
+<span class="text-xs mt-1 font-bold">Mail</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full mt-16 border-t-4 border-brutal-black bg-brutal-black text-acid-green font-label-code text-body-md shadow-none flex flex-col md:flex-row justify-between items-center px-margin-desktop max-md:px-margin-mobile py-12 gap-gutter relative z-40 pb-32 md:pb-12">
+<div class="font-display-xl text-headline-lg text-acid-green uppercase font-black tracking-tighter">
+            Aritra Dhar
+        </div>
+<div class="flex gap-6">
+<a class="text-on-primary hover:text-caution-yellow transition-colors font-bold uppercase" href="#">Github</a>
+<a class="text-on-primary hover:text-caution-yellow transition-colors font-bold uppercase" href="#">LinkedIn</a>
+<a class="text-on-primary hover:text-caution-yellow transition-colors font-bold uppercase" href="#">Twitter</a>
+<a class="text-acid-green underline hover:text-caution-yellow transition-colors font-bold uppercase" href="#">Resume</a>
+</div>
+<div class="text-center md:text-right text-sm">
+            © 2024 ARITRA DHAR.<br/>CODED WITH CHAOS.
+        </div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. Parallax Scrolling ---
+            const heroBg = document.getElementById('hero-checker-bg');
+            const globalBg = document.getElementById('global-grid-bg');
+            const heroSection = document.getElementById('hero-section');
+            const workSection = document.getElementById('work');
+
+            let scrollY = window.scrollY;
+            let ticking = false;
+
+            const updateParallax = () => {
+                // Background grid parallax (slower than scroll)
+                if (globalBg) {
+                    globalBg.style.transform = `translateY(${scrollY * -0.3}px)`;
+                }
+                
+                // Hero checker parallax
+                if (heroBg) {
+                    const heroRect = heroSection.getBoundingClientRect();
+                    if (heroRect.top < window.innerHeight && heroRect.bottom > 0) {
+                        heroBg.style.transform = `translateY(${scrollY * 0.4}px)`;
+                    }
+                }
+                
+                ticking = false;
+            };
+
+            window.addEventListener('scroll', () => {
+                scrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            });
+
+            // Intersection Observer to enable/disable complex background animations if needed
+            // Keeping parallax driven by scroll for smoothness, but could use IO for activation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Optional: Toggle active classes for performance if sections are out of view
+                });
+            }, { threshold: 0.1 });
+            
+            if (workSection) observer.observe(workSection);
+            if (heroSection) observer.observe(heroSection);
+
+
+            // --- 2. Card Flicks ---
+            const cardStack = document.querySelector('.card-stack');
+            const cards = Array.from(document.querySelectorAll('.card-stack-item'));
+            let isAnimating = false;
+
+            const order = [0, 1, 2]; // Represents bottom, middle, top DOM elements mapping to visual classes
+
+            const flickNextCard = () => {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // The top card is visually stack-2
+                const topCardIndex = order.findIndex(idx => cards[idx].classList.contains('stack-2'));
+                const topCard = cards[topCardIndex];
+
+                // Flick out animation
+                topCard.classList.add('card-flicking');
+
+                setTimeout(() => {
+                    topCard.classList.remove('card-flicking');
+                    
+                    // Rotate classes manually to update visual stack
+                    cards.forEach(card => {
+                        if (card.classList.contains('stack-2')) {
+                            card.classList.remove('stack-2');
+                            card.classList.add('stack-0');
+                        } else if (card.classList.contains('stack-1')) {
+                            card.classList.remove('stack-1');
+                            card.classList.add('stack-2');
+                        } else if (card.classList.contains('stack-0')) {
+                            card.classList.remove('stack-0');
+                            card.classList.add('stack-1');
+                        }
+                    });
+
+                    isAnimating = false;
+                }, 400); // Wait for transition to complete
+            };
+
+            if (cardStack) {
+                cardStack.addEventListener('click', flickNextCard);
+                cardStack.addEventListener('mouseenter', flickNextCard);
+            }
+        });
+    </script>
+</body></html>

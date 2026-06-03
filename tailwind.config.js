@@ -4,6 +4,31 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Neo-Brutalist palette
+        'brutal-black': '#0A0A0F',
+        'acid-green': '#ADFF2F',
+        'caution-yellow': '#FFD600',
+        'primary': '#630ed4',
+        'primary-container': '#7c3aed',
+        'on-primary': '#ffffff',
+        'on-primary-container': '#ede0ff',
+        'secondary': '#b5005d',
+        'secondary-container': '#e20476',
+        'on-secondary': '#ffffff',
+        'tertiary': '#005669',
+        'tertiary-container': '#007088',
+        'tertiary-fixed': '#b4ebff',
+        'surface': '#f9f9f9',
+        'surface-dim': '#dadada',
+        'surface-container': '#eeeeee',
+        'surface-container-low': '#f3f3f4',
+        'on-surface': '#1a1c1c',
+        'on-surface-variant': '#4a4455',
+        'outline': '#7b7487',
+        'outline-variant': '#ccc3d8',
+        'secondary-fixed': '#ffd9e1',
+        'secondary-fixed-dim': '#ffb1c6',
+        // Legacy cyber (keep for safety)
         cyber: {
           cyan: '#00d4ff',
           purple: '#7c3aed',
@@ -15,28 +40,65 @@ export default {
       },
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
+        'display-xl': ['Space Grotesk', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        'label-code': ['JetBrains Mono', 'monospace'],
+        'body-md': ['Space Grotesk', 'sans-serif'],
+        'headline-md': ['Space Grotesk', 'sans-serif'],
+        'headline-lg': ['Space Grotesk', 'sans-serif'],
+      },
+      fontSize: {
+        'display-xl': ['80px', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '700' }],
+        'headline-lg': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
+        'headline-lg-mobile': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+        'headline-md': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+        'body-lg': ['20px', { lineHeight: '1.5', fontWeight: '500' }],
+        'body-md': ['16px', { lineHeight: '1.5', fontWeight: '500' }],
+        'label-code': ['14px', { lineHeight: '1.4', fontWeight: '400' }],
+      },
+      spacing: {
+        'margin-mobile': '16px',
+        'margin-desktop': '64px',
+        'shadow-offset': '8px',
+        'gutter': '24px',
+        'border-width': '4px',
       },
       animation: {
+        'marquee': 'marquee 25s linear infinite',
+        'marquee-reverse': 'marquee-reverse 20s linear infinite',
         'float': 'float 6s ease-in-out infinite',
-        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
         'spin-slow': 'spin 20s linear infinite',
-        'border-flow': 'border-flow 3s linear infinite',
+        'wiggle': 'wiggle 0.3s ease-in-out',
+        'slide-up': 'slide-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
       keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-reverse': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
         float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-15px) rotate(3deg)' },
         },
-        'glow-pulse': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(0,212,255,0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(0,212,255,0.8), 0 0 80px rgba(0,212,255,0.3)' },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-3deg)' },
+          '75%': { transform: 'rotate(3deg)' },
         },
-        'border-flow': {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
+        'slide-up': {
+          '0%': { transform: 'translateY(40px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+      },
+      boxShadow: {
+        'brutal-sm': '4px 4px 0px 0px #0A0A0F',
+        'brutal': '8px 8px 0px 0px #0A0A0F',
+        'brutal-lg': '16px 16px 0px 0px #0A0A0F',
+        'brutal-hover': '12px 12px 0px 0px #0A0A0F',
       },
     },
   },
