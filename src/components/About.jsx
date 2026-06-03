@@ -119,19 +119,19 @@ export default function About() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
             style={{ rotate: imageRotate }}
-            className="md:col-span-5 bg-tertiary-container border-4 border-brutal-black neobrutal-shadow relative overflow-hidden min-h-[380px] flex items-center justify-center interactive-surface"
+            className="md:col-span-5 bg-tertiary-container border-4 border-brutal-black neobrutal-shadow relative overflow-hidden min-h-[300px] flex items-center justify-center interactive-surface"
           >
-            {/* Placeholder illustration */}
-            <div className="absolute inset-0 bg-gradient-to-br from-tertiary-container to-primary-container opacity-80" />
-            <div className="relative z-10 text-center p-8">
-              <div className="text-9xl mb-4">👨‍💻</div>
-              <div className="font-display font-black text-2xl text-white uppercase">
-                Aritra Dhar
-              </div>
-            </div>
+            {/* Photo */}
+            <img
+              src="/aritra.jpg"
+              alt="Aritra Dhar"
+              className="absolute -inset-5 w-[calc(100%+40px)] h-[calc(100%+40px)] object-cover object-top"
+            />
+            {/* Subtle gradient overlay for neo-brutalist tint */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brutal-black/40 via-transparent to-transparent pointer-events-none" />
 
             {/* ARITRA.IMG label */}
-            <div className="absolute bottom-4 right-4 sticker-badge bg-acid-green text-brutal-black">
+            <div className="absolute bottom-4 right-4 sticker-badge bg-acid-green text-brutal-black z-10">
               ARITRA.IMG
             </div>
           </motion.div>
