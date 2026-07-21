@@ -61,7 +61,7 @@ const projects = [
     title: 'Saas Landing Page UI',
     subtitle: 'High-Retention Landing Page',
     description:
-      'Modern marketing UI for Saas/digital products — designed for maximum engagement with smooth animations.',
+      'Modern marketing UI for Saas/digital products — designed for maximum engagement.',
     icon: Brain,
     bg: 'bg-caution-yellow',
     chipBg: 'bg-brutal-black',
