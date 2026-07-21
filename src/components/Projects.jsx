@@ -58,16 +58,16 @@ const projects = [
     span: '',
   },
   {
-    title: 'Marketing Website UI',
+    title: 'Saas Landing Page Skeudomorphic UI',
     subtitle: 'High-Retention Landing Page',
     description:
-      'Modern marketing UI for influencers — designed for maximum engagement with smooth animations.',
+      'Modern marketing UI for influencers/Saas/digital products — designed for maximum engagement with smooth animations.',
     icon: Brain,
     bg: 'bg-caution-yellow',
     chipBg: 'bg-brutal-black',
     chipText: 'text-white',
     tags: ['React', 'TailwindCSS', 'Framer Motion'],
-    github: 'https://smm-solution-website-by-aritra.netlify.app/',
+    github: 'https://skeudomorphicland.netlify.app/',
     span: '',
   },
 ]
