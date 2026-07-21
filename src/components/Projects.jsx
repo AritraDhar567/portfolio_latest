@@ -58,15 +58,15 @@ const projects = [
     span: '',
   },
   {
-    title: 'Saas Landing Page Skeudomorphic UI',
+    title: 'Saas Landing Page UI',
     subtitle: 'High-Retention Landing Page',
     description:
-      'Modern marketing UI for influencers/Saas/digital products — designed for maximum engagement with smooth animations.',
+      'Modern marketing UI for Saas/digital products — designed for maximum engagement with smooth animations.',
     icon: Brain,
     bg: 'bg-caution-yellow',
     chipBg: 'bg-brutal-black',
     chipText: 'text-white',
-    tags: ['React', 'TailwindCSS', 'Framer Motion'],
+    tags: ['React', 'TailwindCSS', 'Skeudomorphism'],
     github: 'https://skeudomorphicland.netlify.app/',
     span: '',
   },
